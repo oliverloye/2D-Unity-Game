@@ -26,8 +26,28 @@ public class CharacterController2D : MonoBehaviour
 
 	[System.Serializable]
 	public class BoolEvent : UnityEvent<bool> { }
+    public class PlayerStats
+    {
+        public int maxHealth = 100;
 
-	public BoolEvent OnCrouchEvent;
+        private int _currentHealth;
+        public int currentHealth
+        {
+            get { return _currentHealth; }
+            set { _currentHealth = Mathf.Clamp(value, 0, maxHealth); }
+        }
+
+        public void Init()
+        {
+            currentHealth = maxHealth;
+        }
+    }
+
+    public PlayerStats stats = new PlayerStats();
+
+
+
+    public BoolEvent OnCrouchEvent;
 	private bool m_wasCrouching = false;
 
 	private void Awake()
@@ -140,4 +160,14 @@ public class CharacterController2D : MonoBehaviour
 
         transform.Rotate(0f, 180f, 0f);
 	}
+
+    public void DamagePlayer (int damage)
+    {
+        stats.currentHealth -= damage;
+        if (stats.currentHealth <= 0)
+        {
+            Debug.Log("GAME OVER");
+            Destroy(gameObject);
+        }
+    }
 }
