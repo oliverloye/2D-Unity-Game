@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class Patrol : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public float speed;
+    public Transform[] moveSpots;
+    private int randomSpots;
+
+    void Start ()
     {
-        
+        randomSpots = Random.Range(0, moveSpots.Length);
     }
 
-    // Update is called once per frame
-    void Update()
+    void Update ()
     {
-        
+        transform.position = Vector2.MoveTowards(transform.position, moveSpots[randomSpots].position, speed * Time.deltaTime);
     }
 }
